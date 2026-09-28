@@ -1,4 +1,4 @@
-include .env
+-include .env
 export
 
 export PROJECT_ROOT=${shell pwd}
@@ -57,6 +57,6 @@ migrate-action:
 		"$(action)"
 
 todoapp-run:
-	@export LOG_FOLDER=${PROJECT_ROOT}/out/logs && \
+	@export LOGGER_FOLDER=${PROJECT_ROOT}/out/logs && \
 	go mod tidy && \
 	go run cmd/todoapp/main.go

@@ -1,4 +1,4 @@
-module github.com/ShameOnY/golang-todoapp/tree/main
+module github.com/ShameOnY/golang-todoapp
 
 go 1.26.3
 

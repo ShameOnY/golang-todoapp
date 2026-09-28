@@ -1,12 +1,11 @@
 package core_http_middleware
 
 import (
-	"context"
 	"net/http"
 	"time"
 
-	core_logger "github.com/ShameOnY/golang-todoapp/tree/main/internal/core/logger"
-	core_http_response "github.com/ShameOnY/golang-todoapp/tree/main/internal/core/transport/http/response"
+	core_logger "github.com/ShameOnY/golang-todoapp/internal/core/logger"
+	core_http_response "github.com/ShameOnY/golang-todoapp/internal/core/transport/http/response"
 	"github.com/google/uuid"
 	"go.uber.org/zap"
 )
@@ -41,11 +40,10 @@ func Logger(log *core_logger.Logger) Middleware {
 				zap.String("url", r.URL.String()),
 			)
 
-			ctx := context.WithValue(r.Context(), "log", l)
+			ctx := core_logger.ToContext(r.Context(), l)
 
 			next.ServeHTTP(w, r.WithContext(ctx))
 		})
-
 	}
 }
 
@@ -88,7 +86,7 @@ func Trace() Middleware {
 			log.Debug(
 				"<<< done HTTP request",
 				zap.Int("status code", rw.GetStatusCodeOrPanic()),
-				zap.Duration("latency", time.Now().Sub(before)),
+				zap.Duration("latency", time.Since(before)),
 			)
 		})
 	}
