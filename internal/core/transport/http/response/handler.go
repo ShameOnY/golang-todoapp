@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
-	core_logger "github.com/ShameOnY/golang-todoapp/tree/main/internal/core/logger"
+	core_logger "github.com/ShameOnY/golang-todoapp/internal/core/logger"
 	"go.uber.org/zap"
 )
 

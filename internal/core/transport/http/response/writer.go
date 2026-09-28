@@ -2,7 +2,7 @@ package core_http_response
 
 import "net/http"
 
-var (
+const (
 	StatusCodeUninitialization = -1
 )
 
@@ -19,8 +19,20 @@ func NewResponseWriter(w http.ResponseWriter) *ResponseWriter {
 }
 
 func (rw *ResponseWriter) WriteHeader(statusCode int) {
+	if rw.statusCode != StatusCodeUninitialization {
+		return
+	}
+
 	rw.ResponseWriter.WriteHeader(statusCode)
 	rw.statusCode = statusCode
+}
+
+func (rw *ResponseWriter) Write(b []byte) (int, error) {
+	if rw.statusCode == StatusCodeUninitialization {
+		rw.statusCode = http.StatusOK
+	}
+
+	return rw.ResponseWriter.Write(b)
 }
 
 func (rw *ResponseWriter) GetStatusCodeOrPanic() int {

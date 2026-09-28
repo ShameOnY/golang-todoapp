@@ -7,9 +7,10 @@ import (
 	"os/signal"
 	"syscall"
 
-	core_logger "github.com/ShameOnY/golang-todoapp/tree/main/internal/core/logger"
-	core_http_server "github.com/ShameOnY/golang-todoapp/tree/main/internal/core/transport/server"
-	users_transport_http "github.com/ShameOnY/golang-todoapp/tree/main/internal/features/users/transport/http"
+	core_logger "github.com/ShameOnY/golang-todoapp/internal/core/logger"
+	core_http_middleware "github.com/ShameOnY/golang-todoapp/internal/core/transport/http/middleware"
+	core_http_server "github.com/ShameOnY/golang-todoapp/internal/core/transport/server"
+	users_transport_http "github.com/ShameOnY/golang-todoapp/internal/features/users/transport/http"
 	"go.uber.org/zap"
 )
 
@@ -38,6 +39,10 @@ func main() {
 	httpServer := core_http_server.NewHTTPServer(
 		core_http_server.NewConfigMust(),
 		logger,
+		core_http_middleware.RequestID(),
+		core_http_middleware.Logger(logger),
+		core_http_middleware.Trace(),
+		core_http_middleware.Panic(),
 	)
 
 	httpServer.RegisterAPIRoutes(apiVersionRouter)
